@@ -1,12 +1,13 @@
 const ws = require('ws');
+const setupWSConnection = require('y-websocket/bin/utils').setupWSConnection;
 
-const SOCKET_PORT = 1712;
+const SOCKET_PORT = 3000;
 
 const initConnection = () => {
     const socket = new ws.WebSocketServer({ port: SOCKET_PORT });
 
-    socket.on('connection', () => {
-        console.log('client connected');
+    socket.on('connection', (conn, req) => {
+        setupWSConnection(conn, req, { docName: 'sql-content', gc: true });
     });
 }
 
