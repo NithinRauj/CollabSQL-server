@@ -11,6 +11,16 @@ const initDBConnection = () => {
     db.connect();
 }
 
+const clearSessionsData = () => {
+    db.query('DELETE FROM AppSession', (err, result, fields) => {
+        if (err) {
+            console.log("Error clearing sessions data");
+        } else {
+            console.log("Cleared sessions data");
+        }
+    })
+}
+
 module.exports = {
-    dbConnection: db, initDBConnection
+    db, initDBConnection, clearSessionsData
 };

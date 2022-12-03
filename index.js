@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const apiRouter = require('./routes/main');
-const { initConnection } = require('./services/socket');
+const { initSocketConnection } = require('./services/socket');
+const { initDBConnection, clearSessionsData } = require('./services/db');
 
 app.use(express.json());
 app.use(cors());
@@ -15,4 +16,10 @@ app.listen(PORT, () => {
     console.log('Server running...');
 });
 
-initConnection();
+const initServices = () => {
+    initDBConnection();
+    clearSessionsData();
+    initSocketConnection();
+}
+
+initServices();

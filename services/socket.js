@@ -3,7 +3,7 @@ const setupWSConnection = require('y-websocket/bin/utils').setupWSConnection;
 
 const SOCKET_PORT = 3000;
 
-const initConnection = () => {
+const initSocketConnection = () => {
     const socket = new ws.WebSocketServer({ port: SOCKET_PORT });
 
     socket.on('connection', (conn, req) => {
@@ -11,4 +11,4 @@ const initConnection = () => {
     });
 }
 
-module.exports = { initConnection };
+module.exports = { initSocketConnection };
