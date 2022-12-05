@@ -19,15 +19,31 @@ router.post('/createSession', (req, res) => {
     }
 });
 
+router.get('/getResult/:id', (req, res) => {
+    const id = req.params.id;
+    try {
+        db.query(`SELECT result FROM AppSession WHERE sessionId=?`, [id], (err, result) => {
+            if (err) {
+                return res.status(400).json({ err: true, msg: 'Session not created', desc: err });
+            } else {
+                return res.status(200).json({ err: false, result: result[0] });
+            }
+        });
+    } catch (err) {
+        console.log('Error in DB', err);
+        return res.status(500).json({ err: true, msg: 'Server Error', desc: err });
+    }
+});
+
 router.post('/execsql', (req, res) => {
     console.log('Executing SQL query...');
     const data = req.body;
     try {
-        db.query(data['query'], (err, result, fields) => {
+        db.query(data['query'], (err, result) => {
             if (err) {
                 return res.status(400).json({ err: true, msg: 'Query Execution failed', desc: err });
             } else {
-                db.query(`UPDATE AppSession SET result=? WHERE sessionId=?`, [JSON.stringify(result), data.id]);
+                db.query(`UPDATE AppSession SET result=? WHERE sessionId=?`, [JSON.stringify({ result }), data.id]);
                 return res.status(200).json({ err: false, msg: 'Query executed', result });
             }
         });
